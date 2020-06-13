@@ -1,22 +1,56 @@
 import React from "react"
-import { Link } from "gatsby"
+import { graphql } from "gatsby"
+import Img from "gatsby-image"
 
 import Layout from "../components/layout"
-import Image from "../components/image"
 import SEO from "../components/seo"
 
-const IndexPage = () => (
-  <Layout>
-    <SEO title="Home" />
-    <h1>Hi people</h1>
-    <p>Welcome to your new Gatsby site.</p>
-    <p>Now go build something great.</p>
-    <div style={{ maxWidth: `300px`, marginBottom: `1.45rem` }}>
-      <Image />
-    </div>
-    <Link to="/page-2/">Go to page 2</Link> <br />
-    <Link to="/using-typescript/">Go to "Using TypeScript"</Link>
-  </Layout>
-)
+const IndexPage = ({ data }) => {
+  const products = data.allDatoCmsProduct.nodes
+  return (
+    <Layout>
+      <SEO title="Home" />
+      <main className="grid-container">
+        {products.map(product => (
+          <article key={product.id} className="grid-item">
+            <h2>{product.name}</h2>
+            <Img fluid={product.image.fluid}></Img>
+            <p>${product.price}</p>
+            <a
+              href="#"
+              className="snipcart-add-item"
+              data-item-id={product.id}
+              data-item-description="with love"
+              data-item-price={product.price}
+              data-item-image={product.image.url}
+              data-item-name={product.name}
+              data-item-url="/"
+            >
+              Ajouter au panier
+            </a>
+          </article>
+        ))}
+      </main>
+    </Layout>
+  )
+}
 
 export default IndexPage
+
+export const query = graphql`
+  query ProductsQuery {
+    allDatoCmsProduct {
+      nodes {
+        id
+        name
+        price
+        image {
+          url
+          fluid(maxWidth: 600) {
+            ...GatsbyDatoCmsFluid
+          }
+        }
+      }
+    }
+  }
+`

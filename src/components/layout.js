@@ -10,7 +10,8 @@ import PropTypes from "prop-types"
 import { useStaticQuery, graphql } from "gatsby"
 
 import Header from "./header"
-import "./layout.css"
+// import "./layout.css"
+import "./custom.css"
 
 const Layout = ({ children }) => {
   const data = useStaticQuery(graphql`
@@ -25,12 +26,17 @@ const Layout = ({ children }) => {
 
   return (
     <>
+      <div
+        id="snipcart"
+        data-api-key="MmE2YTk3MjktNDE0MS00MDg4LWEzM2UtOTI2NDZkOGRkNDM5NjM3Mjc2Mzk0NTkxMTU4NTg2"
+        hidden
+      ></div>
       <Header siteTitle={data.site.siteMetadata.title} />
       <div
         style={{
           margin: `0 auto`,
-          maxWidth: 960,
-          padding: `0 1.0875rem 1.45rem`,
+          maxWidth: 1200,
+          padding: `128px 1.0875rem 1.45rem`,
         }}
       >
         <main>{children}</main>
